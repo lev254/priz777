@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="referrer" content="no-referrer">
+  <title>LEVBONUS7 · Восточный бонус</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0a0708;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    /* Восточный орнамент на фоне */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(rgba(255, 215, 0, 0.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ===== ПАДАЮЩИЕ МОНЕТЫ (ЗОЛОТЫЕ И СЕРЕБРЯНЫЕ) ===== */
+    .coins-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .coin {
+      position: absolute;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      box-shadow: 0 0 12px currentColor;
+      animation: fallCoin linear infinite;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    .coin.gold {
+      background: radial-gradient(circle at 35% 35%, #FFE55C, #D4AF37, #B8860B);
+      color: #ffd700;
+    }
+    .coin.silver {
+      background: radial-gradient(circle at 35% 35%, #F0F0F0, #C0C0C0, #A0A0A0);
+      color: #e0e0e0;
+    }
+    .coin::after {
+      content: "◈";
+      position: absolute;
+      font-size: 20px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: rgba(0,0,0,0.25);
+      font-weight: bold;
+    }
+    @keyframes fallCoin {
+      0% {
+        transform: translateY(-20vh) rotate(0deg) rotateX(0deg);
+        opacity: 0;
+      }
+      15% { opacity: 0.9; }
+      85% { opacity: 0.8; }
+      100% {
+        transform: translateY(120vh) rotate(1080deg) rotateX(540deg);
+        opacity: 0;
+      }
+    }
+
+    /* ===== ОСНОВНАЯ КАРТОЧКА — ВОСТОЧНЫЙ ШИК ===== */
+    .glass-card {
+      position: relative;
+      z-index: 20;
+      max-width: 640px;
+      width: 100%;
+      background: rgba(8, 6, 10, 0.65);
+      backdrop-filter: blur(18px);
+      border-radius: 80px 80px 72px 72px;
+      border: 1px solid rgba(218, 165, 32, 0.6);
+      box-shadow: 0 30px 45px rgba(0,0,0,0.5), 0 0 0 2px rgba(218,165,32,0.2) inset;
+      transition: transform 0.3s ease, box-shadow 0.3s;
+    }
+    .glass-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 35px 55px rgba(218,165,32,0.2);
+    }
+
+    /* ===== КНОПКА ЯЗЫКА (ЯРКАЯ, БЕЛАЯ, С ФЛАГОМ) ===== */
+    .language-dropdown {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+    }
+    .lang-button {
+      background: #fff9f0;
+      backdrop-filter: blur(4px);
+      border: 2px solid #daa520;
+      border-radius: 60px;
+      padding: 8px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #2c1a0a;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+    }
+    .lang-button:hover {
+      background: #c9e8ff;
+      border-color: #0088cc;
+      transform: scale(1.02);
+    }
+    .lang-flag-current {
+      font-size: 1.6rem;
+    }
+    .lang-name-current {
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    .lang-menu {
+      position: absolute;
+      top: 60px;
+      right: 0;
+      background: #fffef7;
+      border-radius: 36px;
+      padding: 10px 0;
+      min-width: 230px;
+      max-height: 420px;
+      overflow-y: auto;
+      border: 1px solid #daa520;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .lang-menu.show {
+      display: flex;
+    }
+    .lang-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #2c1a0a;
+    }
+    .lang-item:hover {
+      background: #fdebb3;
+    }
+    .lang-flag {
+      font-size: 1.7rem;
+    }
+
+    /* ===== АНИМИРОВАННЫЙ ПОДАРОК ===== */
+    .gift-oriental {
+      background: linear-gradient(135deg, #2a1f18, #1f1510);
+      border-radius: 80px 80px 56px 56px;
+      padding: 38px 20px;
+      text-align: center;
+      border-bottom: 3px solid #daa520;
+    }
+    .gift-box {
+      font-size: 6rem;
+      display: inline-block;
+      animation: floatGift 1.4s infinite ease;
+      filter: drop-shadow(0 8px 18px rgba(218,165,32,0.5));
+    }
+    @keyframes floatGift {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+    .gift-sub {
+      margin-top: 14px;
+      color: #f5cb5c;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      background: rgba(0,0,0,0.4);
+      display: inline-block;
+      padding: 4px 18px;
+      border-radius: 60px;
+    }
+
+    /* КОНТЕНТ */
+    .content {
+      padding: 28px 26px 42px;
+      text-align: center;
+    }
+
+    /* ЗАГОЛОВОК ПРОМОКОДА — ЗОЛОТОЙ ГРАДИЕНТ */
+    .main-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.8rem;
+      font-weight: 900;
+      letter-spacing: 4px;
+      background: linear-gradient(135deg, #F9E0A0, #E6B422, #C68E17);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+    @media (max-width: 550px) {
+      .main-title { font-size: 2.6rem; letter-spacing: 2px; }
+    }
+
+    .year-chip {
+      display: inline-block;
+      background: rgba(218,165,32,0.18);
+      border-radius: 60px;
+      padding: 5px 18px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #ffdd88;
+      border: 1px solid rgba(218,165,32,0.6);
+      margin-bottom: 22px;
+      backdrop-filter: blur(4px);
+    }
+
+    /* БОНУС БЛОК (НЕЗАМЕТНЫЕ ФОРМУЛИРОВКИ) */
+    .bonus-safe {
+      background: rgba(0, 0, 0, 0.45);
+      border-radius: 48px;
+      padding: 20px 24px;
+      margin: 20px 0;
+      text-align: left;
+      border-right: 4px solid #daa520;
+      backdrop-filter: blur(5px);
+    }
+    .bonus-safe p {
+      color: #ece5d8;
+      font-size: 0.92rem;
+      line-height: 1.5;
+      margin: 8px 0;
+    }
+    .bonus-safe strong {
+      color: #f5cb5c;
+      font-weight: 700;
+    }
+
+    /* ПРОМОКОД БЛОК */
+    .promo-block {
+      background: rgba(0,0,0,0.55);
+      border-radius: 100px;
+      padding: 10px 20px;
+      margin: 22px 0 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      border: 1px solid rgba(218,165,32,0.6);
+    }
+    .promo-code {
+      font-family: 'Inter', monospace;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: 4px;
+      background: #0a0a12;
+      padding: 8px 24px;
+      border-radius: 80px;
+      color: #ffdb7e;
+      flex: 1;
+      text-align: center;
+    }
+    .copy-btn {
+      background: #daa520;
+      border: none;
+      padding: 10px 28px;
+      border-radius: 80px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      cursor: pointer;
+      color: #1e1a10;
+      transition: 0.2s;
+      box-shadow: 0 4px 12px rgba(218,165,32,0.4);
+    }
+    .copy-btn:active { transform: scale(0.96); background: #b8860b; }
+
+    .promo-note {
+      background: rgba(218,165,32,0.15);
+      border-radius: 60px;
+      padding: 8px 18px;
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #f5cb5c;
+      margin: 12px 0 15px;
+    }
+
+    /* ГЛАВНАЯ КНОПКА — ЗОЛОТАЯ, ВОСТОЧНАЯ */
+    .main-btn {
+      background: linear-gradient(115deg, #daa520, #b8860b);
+      border: none;
+      width: 100%;
+      padding: 20px;
+      font-size: 1.6rem;
+      font-weight: 800;
+      border-radius: 100px;
+      color: #1f1406;
+      cursor: pointer;
+      transition: all 0.25s;
+      box-shadow: 0 15px 25px rgba(0,0,0,0.5), 0 0 0 1px #ffdf80 inset;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 18px;
+      font-family: 'Playfair Display', serif;
+    }
+    .main-btn:hover {
+      transform: scale(0.98);
+      background: linear-gradient(115deg, #e6b422, #cd7a00);
+      box-shadow: 0 8px 20px rgba(218,165,32,0.6);
+    }
+
+    .footer {
+      font-size: 0.7rem;
+      color: #b8aa7a;
+      margin-top: 28px;
+      border-top: 1px dashed rgba(218,165,32,0.4);
+      padding-top: 18px;
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .glass-card {
+      animation: fadeSlideUp 0.55s ease-out;
+    }
+  </style>
+</head>
+<body>
+
+<div class="coins-container" id="coinsContainer"></div>
+
+<div class="glass-card">
+  <!-- КНОПКА ЯЗЫКА С ФЛАГОМ И НАЗВАНИЕМ -->
+  <div class="language-dropdown">
+    <div class="lang-button" id="langButton">
+      <span class="lang-flag-current" id="currentFlag">🇷🇺</span>
+      <span class="lang-name-current" id="currentLangName">Русский</span>
+    </div>
+    <div class="lang-menu" id="langMenu">
+      <div class="lang-item" data-lang="ru" data-flag="🇷🇺" data-name="Русский"><span class="lang-flag">🇷🇺</span><span>Русский</span></div>
+      <div class="lang-item" data-lang="en" data-flag="🇬🇧" data-name="English"><span class="lang-flag">🇬🇧</span><span>English</span></div>
+      <div class="lang-item" data-lang="ar" data-flag="🇸🇦" data-name="العربية"><span class="lang-flag">🇸🇦</span><span>العربية</span></div>
+      <div class="lang-item" data-lang="tr" data-flag="🇹🇷" data-name="Türkçe"><span class="lang-flag">🇹🇷</span><span>Türkçe</span></div>
+      <div class="lang-item" data-lang="ur" data-flag="🇵🇰" data-name="اردو"><span class="lang-flag">🇵🇰</span><span>اردو</span></div>
+      <div class="lang-item" data-lang="fa" data-flag="🇮🇷" data-name="فارسی"><span class="lang-flag">🇮🇷</span><span>فارسی</span></div>
+      <div class="lang-item" data-lang="pt" data-flag="🇧🇷" data-name="Português"><span class="lang-flag">🇧🇷</span><span>Português</span></div>
+      <div class="lang-item" data-lang="id" data-flag="🇮🇩" data-name="Bahasa Indonesia"><span class="lang-flag">🇮🇩</span><span>Bahasa Indonesia</span></div>
+      <div class="lang-item" data-lang="ms" data-flag="🇲🇾" data-name="Bahasa Melayu"><span class="lang-flag">🇲🇾</span><span>Bahasa Melayu</span></div>
+      <div class="lang-item" data-lang="th" data-flag="🇹🇭" data-name="ไทย"><span class="lang-flag">🇹🇭</span><span>ไทย</span></div>
+      <div class="lang-item" data-lang="fil" data-flag="🇵🇭" data-name="Filipino"><span class="lang-flag">🇵🇭</span><span>Filipino</span></div>
+      <div class="lang-item" data-lang="hi" data-flag="🇮🇳" data-name="हिन्दी"><span class="lang-flag">🇮🇳</span><span>हिन्दी</span></div>
+      <div class="lang-item" data-lang="bn" data-flag="🇧🇩" data-name="বাংলা"><span class="lang-flag">🇧🇩</span><span>বাংলা</span></div>
+      <div class="lang-item" data-lang="es" data-flag="🇨🇱" data-name="Español"><span class="lang-flag">🇨🇱</span><span>Español</span></div>
+    </div>
+  </div>
+
+  <!-- ПОДАРОК ВМЕСТО ФОТО -->
+  <div class="gift-oriental">
+    <div class="gift-box">🎁</div>
+    <div class="gift-sub">✦ Активируй свой дар ✦</div>
+  </div>
+
+  <div class="content">
+    <div class="main-title">LEVBONUS7</div>
+    <div class="year-chip">⚡ 2026 · Восточная коллекция ⚡</div>
+
+    <div class="bonus-safe" id="bonusInfo"></div>
+
+    <div class="promo-block">
+      <span class="promo-code" id="promoCode">LEVBONUS7</span>
+      <button class="copy-btn" id="copyBtn">📋 Копировать</button>
+    </div>
+
+    <div class="promo-note" id="promoNote"></div>
+
+    <button class="main-btn" id="claimBtn">
+      🎁 ЗАБРАТЬ ПОДАРОК
+    </button>
+
+    <div class="footer" id="footerNote">
+      🔞 Для гостей старше 18 лет | Бонус активируется автоматически
+    </div>
+  </div>
+</div>
+
+<script>
+  // === ВАША РЕФЕРАЛЬНАЯ ССЫЛКА (НЕ МЕНЯТЬ) ===
+  const CASINO_URL = 'https://lkvn.cc/2f44f7';
+
+  // === ПЕРЕВОДЫ НА 14 ЯЗЫКОВ (БЕЗ ПАЛЕВНЫХ СЛОВ) ===
+  const translations = {
+    ru: {
+      bonus: `<p><span>🎲</span> <strong>Что даёт промокод:</strong></p>
+        <p>• Увеличенный бонус на старте</p>
+        <p>• Подарочные вращения (до 70)</p>
+        <p>• Бонус начисляется частями за первые пополнения</p>
+        <p style="margin-top: 10px;"><span>💎</span> Активируй — получи преимущество</p>`,
+      promoNote: '🎁 Промокод активирует бонус при регистрации',
+      footer: '🔞 Для пользователей старше 18 лет | Бонус активируется автоматически',
+      copyAlert: '✅ Промокод LEVBONUS7 скопирован! Нажмите "ЗАБРАТЬ ПОДАРОК" для активации.',
+      copyBtn: '📋 Копировать',
+      claimBtn: '🎁 ЗАБРАТЬ ПОДАРОК',
+      yearChip: '⚡ 2026 · Восточная коллекция ⚡'
+    },
+    en: {
+      bonus: `<p><span>🎲</span> <strong>What the promo gives:</strong></p>
+        <p>• Enhanced starting bonus</p>
+        <p>• Gift spins (up to 70)</p>
+        <p>• Bonus credited in parts for first top‑ups</p>
+        <p style="margin-top: 10px;"><span>💎</span> Activate and get an edge</p>`,
+      promoNote: '🎁 Promo activates bonus upon registration',
+      footer: '🔞 For users 18+ | Bonus activates automatically',
+      copyAlert: '✅ Promo code LEVBONUS7 copied! Click "CLAIM GIFT" to activate.',
+      copyBtn: '📋 Copy',
+      claimBtn: '🎁 CLAIM GIFT',
+      yearChip: '⚡ 2026 · Oriental Collection ⚡'
+    },
+    ar: {
+      bonus: `<p><span>🎲</span> <strong>ماذا يقدم الرمز:</strong></p>
+        <p>• مكافأة معززة للبداية</p>
+        <p>• دوران هدية (حتى 70)</p>
+        <p>• مكافأة على أجزاء لأول إيداعات</p>
+        <p style="margin-top: 10px;"><span>💎</span> فعّل لتحصل على أفضلية</p>`,
+      promoNote: '🎁 الرمز يفعل المكافأة عند التسجيل',
+      footer: '🔞 للمستخدمين فوق 18 سنة | المكافأة تتفعل تلقائياً',
+      copyAlert: '✅ تم نسخ LEVBONUS7! اضغط "احصل على الهدية" للتفعيل',
+      copyBtn: '📋 نسخ',
+      claimBtn: '🎁 احصل على الهدية',
+      yearChip: '⚡ 2026 · المجموعة الشرقية ⚡'
+    },
+    tr: {
+      bonus: `<p><span>🎲</span> <strong>Promosyon kodu neler sağlar:</strong></p>
+        <p>• Başlangıçta artırılmış bonus</p>
+        <p>• Hediye dönüşleri (70’e kadar)</p>
+        <p>• Bonus ilk yüklemelere parça parça verilir</p>
+        <p style="margin-top: 10px;"><span>💎</span> Aktifleştir, avantajı yakala</p>`,
+      promoNote: '🎁 Promosyon kodu kayıtta bonusu aktif eder',
+      footer: '🔞 18 yaş üstü kullanıcılar içindir | Bonus otomatik aktif',
+      copyAlert: '✅ LEVBONUS7 kodu kopyalandı! Aktifleştirmek için "HEDİYEYİ AL"',
+      copyBtn: '📋 Kopyala',
+      claimBtn: '🎁 HEDİYEYİ AL',
+      yearChip: '⚡ 2026 · Doğu Koleksiyonu ⚡'
+    },
+    ur: {
+      bonus: `<p><span>🎲</span> <strong>پرومو کوڈ کیا دیتا ہے:</strong></p>
+        <p>• بہتر ابتدائی بونس</p>
+        <p>• تحفہ اسپن (70 تک)</p>
+        <p>• بونس پہلی بار کے لیے قسطوں میں</p>
+        <p style="margin-top: 10px;"><span>💎</span> ایکٹیویٹ کریں اور برتری حاصل کریں</p>`,
+      promoNote: '🎁 پرومو کوڈ رجسٹریشن پر بونس ایکٹیویٹ کرتا ہے',
+      footer: '🔞 صرف 18 سال سے زائد | بونس خودکار ایکٹیو',
+      copyAlert: '✅ LEVBONUS7 کاپی ہوگیا! "تحفہ وصول کریں" پر کلک کریں',
+      copyBtn: '📋 کاپی',
+      claimBtn: '🎁 تحفہ وصول کریں',
+      yearChip: '⚡ 2026 · مشرقی مجموعہ ⚡'
+    },
+    fa: {
+      bonus: `<p><span>🎲</span> <strong>کد تبلیغاتی چه می‌دهد:</strong></p>
+        <p>• پاداش تقویت‌شده برای شروع</p>
+        <p>• چرخش هدیه (تا 70)</p>
+        <p>• پاداش به صورت اقساط برای واریزهای اول</p>
+        <p style="margin-top: 10px;"><span>💎</span> فعال کن و برتری بگیر</p>`,
+      promoNote: '🎁 کد تبلیغاتی پاداش را در ثبت‌نام فعال می‌کند',
+      footer: '🔞 فقط برای بالای 18 سال | پاداش خودکار فعال می‌شود',
+      copyAlert: '✅ کد LEVBONUS7 کپی شد! "دریافت هدیه" را بزنید',
+      copyBtn: '📋 کپی',
+      claimBtn: '🎁 دریافت هدیه',
+      yearChip: '⚡ 2026 · مجموعه شرقی ⚡'
+    },
+    pt: {
+      bonus: `<p><span>🎲</span> <strong>O que o código dá:</strong></p>
+        <p>• Bônus de partida turbinado</p>
+        <p>• Rodadas de presente (até 70)</p>
+        <p>• Bônus parcelado nos primeiros depósitos</p>
+        <p style="margin-top: 10px;"><span>💎</span> Ative e ganhe vantagem</p>`,
+      promoNote: '🎁 Código ativa bônus no registro',
+      footer: '🔞 Para maiores de 18 | Bônus ativado automaticamente',
+      copyAlert: '✅ Código LEVBONUS7 copiado! Clique "RESGATAR PRESENTE"',
+      copyBtn: '📋 Copiar',
+      claimBtn: '🎁 RESGATAR PRESENTE',
+      yearChip: '⚡ 2026 · Coleção Oriental ⚡'
+    },
+    id: {
+      bonus: `<p><span>🎲</span> <strong>Apa yang diberikan kode:</strong></p>
+        <p>• Bonus awal yang ditingkatkan</p>
+        <p>• Putaran hadiah (hingga 70)</p>
+        <p>• Bonus dicicil untuk deposit pertama</p>
+        <p style="margin-top: 10px;"><span>💎</span> Aktifkan dan dapatkan keunggulan</p>`,
+      promoNote: '🎁 Kode promo mengaktifkan bonus saat pendaftaran',
+      footer: '🔞 Untuk pengguna 18+ | Bonus aktif otomatis',
+      copyAlert: '✅ Kode LEVBONUS7 disalin! Klik "AMBIL HADIAH"',
+      copyBtn: '📋 Salin',
+      claimBtn: '🎁 AMBIL HADIAH',
+      yearChip: '⚡ 2026 · Koleksi Oriental ⚡'
+    },
+    ms: {
+      bonus: `<p><span>🎲</span> <strong>Apa yang diberikan kod:</strong></p>
+        <p>• Bonus permulaan yang dipertingkatkan</p>
+        <p>• Putaran hadiah (sehingga 70)</p>
+        <p>• Bonus diangsur untuk deposit pertama</p>
+        <p style="margin-top: 10px;"><span>💎</span> Aktifkan dan dapat kelebihan</p>`,
+      promoNote: '🎁 Kod promo aktifkan bonus semasa pendaftaran',
+      footer: '🔞 Untuk 18 tahun ke atas | Bonus diaktifkan auto',
+      copyAlert: '✅ Kod LEVBONUS7 disalin! Klik "DAPATKAN HADIAH"',
+      copyBtn: '📋 Salin',
+      claimBtn: '🎁 DAPATKAN HADIAH',
+      yearChip: '⚡ 2026 · Koleksi Oriental ⚡'
+    },
+    th: {
+      bonus: `<p><span>🎲</span> <strong>รหัสโปรโมชั่นให้:</strong></p>
+        <p>• โบนัสเริ่มต้นที่เพิ่มขึ้น</p>
+        <p>• ฟรีสปินของขวัญ (สูงสุด 70)</p>
+        <p>• โบนัสแบ่งจ่ายสำหรับการเติมเงินครั้งแรก</p>
+        <p style="margin-top: 10px;"><span>💎</span> เปิดใช้งานและรับความได้เปรียบ</p>`,
+      promoNote: '🎁 รหัสเปิดใช้งานโบนัสเมื่อลงทะเบียน',
+      footer: '🔞 สำหรับผู้ใช้งานอายุ 18+ | โบนัสเปิดอัตโนมัติ',
+      copyAlert: '✅ คัดลอกรหัส LEVBONUS7 แล้ว! คลิก "รับของขวัญ"',
+      copyBtn: '📋 คัดลอก',
+      claimBtn: '🎁 รับของขวัญ',
+      yearChip: '⚡ 2026 · ซีรีส์ตะวันออก ⚡'
+    },
+    fil: {
+      bonus: `<p><span>🎲</span> <strong>Ano ang ibinibigay ng promo:</strong></p>
+        <p>• Pinahusay na panimulang bonus</p>
+        <p>• Regalong spins (hanggang 70)</p>
+        <p>• Bonus na hinati sa unang mga deposito</p>
+        <p style="margin-top: 10px;"><span>💎</span> I-activate at makakuha ng kalamangan</p>`,
+      promoNote: '🎁 Ina-activate ng promo ang bonus sa pagpaparehistro',
+      footer: '🔞 Para sa 18 pataas | Awtomatikong mag-a-activate',
+      copyAlert: '✅ Nakopya ang LEVBONUS7! I-click ang "KUNIN ANG REGALO"',
+      copyBtn: '📋 Kopyahin',
+      claimBtn: '🎁 KUNIN ANG REGALO',
+      yearChip: '⚡ 2026 · Oriental Collection ⚡'
+    },
+    hi: {
+      bonus: `<p><span>🎲</span> <strong>प्रोमो कोड क्या देता है:</strong></p>
+        <p>• बेहतर शुरुआती बोनस</p>
+        <p>• उपहार स्पिन (70 तक)</p>
+        <p>• पहली जमा राशि पर किस्तों में बोनस</p>
+        <p style="margin-top: 10px;"><span>💎</span> सक्रिय करें और बढ़त पाएं</p>`,
+      promoNote: '🎁 प्रोमो कोड पंजीकरण पर बोनस सक्रिय करता है',
+      footer: '🔞 18+ उपयोगकर्ताओं के लिए | बोनस स्वचालित',
+      copyAlert: '✅ LEVBONUS7 कॉपी हो गया! "उपहार लें" पर क्लिक करें',
+      copyBtn: '📋 कॉपी करें',
+      claimBtn: '🎁 उपहार लें',
+      yearChip: '⚡ 2026 · ओरिएंटल संग्रह ⚡'
+    },
+    bn: {
+      bonus: `<p><span>🎲</span> <strong>প্রোমো কোড কী দেয়:</strong></p>
+        <p>• উন্নত প্রারম্ভিক বোনাস</p>
+        <p>• উপহার স্পিন (70 পর্যন্ত)</p>
+        <p>• প্রথম জমা রাশিতে কিস্তিতে বোনাস</p>
+        <p style="margin-top: 10px;"><span>💎</span> সক্রিয় করুন এবং সুবিধা নিন</p>`,
+      promoNote: '🎁 প্রোমো কোড নিবন্ধনে বোনাস সক্রিয় করে',
+      footer: '🔞 18+ ব্যবহারকারীদের জন্য | বোনাস স্বয়ংক্রিয়',
+      copyAlert: '✅ LEVBONUS7 কোড কপি! "উপহার নিন" ক্লিক করুন',
+      copyBtn: '📋 কপি',
+      claimBtn: '🎁 উপহার নিন',
+      yearChip: '⚡ 2026 · ওরিয়েন্টাল সংগ্রহ ⚡'
+    },
+    es: {
+      bonus: `<p><span>🎲</span> <strong>Lo que da el código:</strong></p>
+        <p>• Bono de inicio mejorado</p>
+        <p>• Giros de regalo (hasta 70)</p>
+        <p>• Bono fraccionado en primeros depósitos</p>
+        <p style="margin-top: 10px;"><span>💎</span> Actívalo y obtén ventaja</p>`,
+      promoNote: '🎁 El código activa el bono al registrarse',
+      footer: '🔞 Para usuarios mayores de 18 | Bono se activa automáticamente',
+      copyAlert: '✅ ¡Código LEVBONUS7 copiado! Haz clic en "RECLAMAR REGALO"',
+      copyBtn: '📋 Copiar',
+      claimBtn: '🎁 RECLAMAR REGALO',
+      yearChip: '⚡ 2026 · Colección Oriental ⚡'
+    }
+  };
+
+  // Применить язык
+  function applyLanguage(lang) {
+    const t = translations[lang];
+    if (!t) return;
+    document.getElementById('bonusInfo').innerHTML = t.bonus;
+    document.getElementById('promoNote').innerHTML = t.promoNote;
+    document.getElementById('footerNote').innerHTML = t.footer;
+    document.getElementById('copyBtn').innerHTML = t.copyBtn;
+    document.getElementById('claimBtn').innerHTML = t.claimBtn;
+    document.getElementById('yearChip').innerHTML = t.yearChip;
+    window.currentCopyAlert = t.copyAlert;
+    // Обновить флаг и название в кнопке
+    const item = document.querySelector(`.lang-item[data-lang="${lang}"]`);
+    if (item) {
+      const flag = item.querySelector('.lang-flag').innerText;
+      const name = item.querySelector('span:last-child').innerText;
+      document.getElementById('currentFlag').innerText = flag;
+      document.getElementById('currentLangName').innerText = name;
+    }
+  }
+
+  // Копирование
+  function copyPromo() {
+    const promoText = document.getElementById('promoCode').innerText;
+    navigator.clipboard.writeText(promoText).then(() => {
+      alert(window.currentCopyAlert || 'Промокод скопирован!');
+    }).catch(() => alert('Скопируйте вручную: ' + promoText));
+  }
+  document.getElementById('copyBtn').onclick = copyPromo;
+
+  // Главная кнопка с реферальной ссылкой
+  document.getElementById('claimBtn').onclick = () => {
+    window.open(CASINO_URL, '_blank');
+  };
+
+  // Выпадающее меню языков
+  const langBtn = document.getElementById('langButton');
+  const langMenu = document.getElementById('langMenu');
+  langBtn.onclick = (e) => {
+    e.stopPropagation();
+    langMenu.classList.toggle('show');
+  };
+  document.querySelectorAll('.lang-item').forEach(item => {
+    item.onclick = (e) => {
+      e.stopPropagation();
+      const lang = item.getAttribute('data-lang');
+      applyLanguage(lang);
+      langMenu.classList.remove('show');
+    };
+  });
+  document.addEventListener('click', () => langMenu.classList.remove('show'));
+
+  // === МОНЕТЫ (золотые + серебряные) ===
+  function createCoin() {
+    const coin = document.createElement('div');
+    const isGold = Math.random() > 0.3;
+    coin.className = `coin ${isGold ? 'gold' : 'silver'}`;
+    const size = Math.random() * 38 + 28;
+    coin.style.width = size + 'px';
+    coin.style.height = size + 'px';
+    coin.style.left = Math.random() * 100 + '%';
+    const duration = Math.random() * 6 + 4.5;
+    coin.style.animationDuration = duration + 's';
+    coin.style.animationDelay = Math.random() * 6 + 's';
+    document.getElementById('coinsContainer').appendChild(coin);
+    setTimeout(() => coin.remove(), duration * 1000);
+  }
+  setInterval(() => {
+    if (document.getElementById('coinsContainer').children.length < 60) createCoin();
+  }, 220);
+  for (let i = 0; i < 35; i++) setTimeout(createCoin, i * 70);
+
+  // Установка русского языка по умолчанию
+  applyLanguage('ru');
+</script>
+</body>
+</html>
