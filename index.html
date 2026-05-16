@@ -21,11 +21,11 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      padding: 16px;
       position: relative;
     }
 
-    /* ===== СОВРЕМЕННЫЕ ПАДАЮЩИЕ МОНЕТЫ ===== */
+    /* ===== ПАДАЮЩИЕ МОНЕТЫ (ОПТИМИЗИРОВАНО ДЛЯ ТЕЛЕФОНОВ) ===== */
     .coins-container {
       position: fixed;
       top: 0;
@@ -38,23 +38,22 @@
     }
     .coin {
       position: absolute;
-      width: 42px;
-      height: 42px;
+      width: 32px;
+      height: 32px;
       background: radial-gradient(circle at 35% 35%, #ffea8c, #d4af37);
       border-radius: 50%;
-      box-shadow: 0 0 10px rgba(255,215,0,0.6), inset 0 1px 3px rgba(255,255,200,0.8);
-      opacity: 0.9;
+      box-shadow: 0 0 6px rgba(255,215,0,0.5);
+      opacity: 0.8;
       animation: fallCoin linear infinite;
-      transform-style: preserve-3d;
+      will-change: transform;
     }
     .coin.silver {
-      background: radial-gradient(circle at 35% 35%, #e8e8e8, #a0a0b0);
-      box-shadow: 0 0 10px rgba(192,192,192,0.6);
+      background: radial-gradient(circle at 35% 35%, #e0e0e0, #a0a0b0);
     }
     .coin::after {
       content: "✦";
       position: absolute;
-      font-size: 20px;
+      font-size: 16px;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
@@ -63,14 +62,25 @@
     }
     @keyframes fallCoin {
       0% {
-        transform: translateY(-20vh) rotate(0deg) rotateX(0deg);
+        transform: translateY(-20vh) rotate(0deg);
         opacity: 0;
       }
-      15% { opacity: 0.9; }
-      85% { opacity: 0.8; }
+      15% { opacity: 0.8; }
+      85% { opacity: 0.7; }
       100% {
-        transform: translateY(120vh) rotate(1080deg) rotateX(540deg);
+        transform: translateY(120vh) rotate(360deg);
         opacity: 0;
+      }
+    }
+
+    /* На телефонах монеты мельче и их меньше */
+    @media (max-width: 600px) {
+      .coin {
+        width: 24px;
+        height: 24px;
+      }
+      .coin::after {
+        font-size: 12px;
       }
     }
 
@@ -78,70 +88,65 @@
     .glass-card {
       position: relative;
       z-index: 20;
-      max-width: 640px;
+      max-width: 600px;
       width: 100%;
-      background: rgba(12, 12, 20, 0.75);
-      backdrop-filter: blur(18px);
-      border-radius: 64px;
+      background: rgba(12, 12, 20, 0.8);
+      backdrop-filter: blur(16px);
+      border-radius: 48px;
       border: 1px solid rgba(0, 255, 255, 0.35);
-      box-shadow: 0 30px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,255,255,0.1) inset;
-      transition: transform 0.25s ease, box-shadow 0.3s ease;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      transition: transform 0.2s ease;
     }
     .glass-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 35px 60px rgba(0,0,0,0.6);
+      transform: translateY(-3px);
     }
 
-    /* ===== КНОПКА ВЫБОРА ЯЗЫКА (ЯРКАЯ, С ФЛАГОМ) ===== */
+    /* ===== КНОПКА ВЫБОРА ЯЗЫКА ===== */
     .language-dropdown {
       position: absolute;
-      top: 20px;
-      right: 20px;
+      top: 16px;
+      right: 16px;
       z-index: 100;
     }
     .lang-button {
       background: #ffffff;
-      backdrop-filter: blur(4px);
       border: 2px solid #0ff;
-      border-radius: 60px;
-      padding: 8px 16px;
+      border-radius: 50px;
+      padding: 6px 14px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       cursor: pointer;
-      transition: all 0.2s ease;
-      font-size: 1rem;
+      transition: 0.2s;
+      font-size: 0.9rem;
       font-weight: 700;
       color: #000;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
     .lang-button:hover {
       background: #c0f5ff;
-      border-color: #00aaff;
-      transform: scale(1.02);
     }
     .lang-flag-current {
-      font-size: 1.6rem;
+      font-size: 1.4rem;
     }
     .lang-name-current {
-      font-size: 0.9rem;
-      font-weight: 600;
+      font-size: 0.8rem;
     }
     .lang-menu {
       position: absolute;
-      top: 55px;
+      top: 48px;
       right: 0;
       background: #ffffff;
-      border-radius: 28px;
-      padding: 10px 0;
-      min-width: 230px;
-      max-height: 420px;
+      border-radius: 24px;
+      padding: 8px 0;
+      min-width: 180px;
+      max-height: 300px;
       overflow-y: auto;
       border: 1px solid #0ff;
-      box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
       display: none;
       flex-direction: column;
-      gap: 4px;
+      gap: 2px;
     }
     .lang-menu.show {
       display: flex;
@@ -149,11 +154,11 @@
     .lang-item {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 10px 20px;
+      gap: 10px;
+      padding: 8px 16px;
       cursor: pointer;
       transition: background 0.2s;
-      font-size: 1rem;
+      font-size: 0.9rem;
       font-weight: 500;
       color: #111;
     }
@@ -161,83 +166,84 @@
       background: #e0f7ff;
     }
     .lang-flag {
-      font-size: 1.6rem;
+      font-size: 1.4rem;
     }
 
-    /* ===== АНИМИРОВАННЫЙ ПОДАРОК ===== */
+    /* ===== ПОДАРОК ===== */
     .gift-icon {
       background: linear-gradient(145deg, #2a2a3a, #1a1a2a);
-      border-radius: 64px 64px 48px 48px;
-      padding: 40px 20px;
+      border-radius: 48px 48px 32px 32px;
+      padding: 30px 20px;
       text-align: center;
       border-bottom: 1px solid rgba(0,255,255,0.4);
     }
     .animated-gift {
-      font-size: 6.2rem;
+      font-size: 5rem;
       display: inline-block;
-      animation: bounceGift 1.2s infinite ease;
-      filter: drop-shadow(0 0 12px rgba(0,255,255,0.6));
+      animation: bounceGift 1s infinite ease;
+      filter: drop-shadow(0 0 8px rgba(0,255,255,0.5));
     }
     @keyframes bounceGift {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+      50% { transform: translateY(-8px); }
     }
     .gift-text {
-      margin-top: 15px;
+      margin-top: 10px;
       color: #ffd966;
-      font-weight: 700;
-      letter-spacing: 1px;
-      font-size: 0.9rem;
+      font-weight: 600;
+      font-size: 0.8rem;
     }
 
     /* КОНТЕНТ */
     .content {
-      padding: 32px 28px 42px;
+      padding: 24px 20px 32px;
       text-align: center;
     }
 
     /* ЗАГОЛОВОК ПРОМОКОДА */
     .main-title {
-      font-family: 'Inter', sans-serif;
-      font-size: 3.6rem;
+      font-size: 2.8rem;
       font-weight: 800;
-      letter-spacing: 4px;
+      letter-spacing: 3px;
       background: linear-gradient(135deg, #FFE6B3, #FFB347, #FF8C00);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
     @media (max-width: 550px) {
-      .main-title { font-size: 2.4rem; letter-spacing: 2px; }
+      .main-title {
+        font-size: 2.2rem;
+        letter-spacing: 2px;
+      }
     }
 
     .year-chip {
       display: inline-block;
       background: rgba(0,255,255,0.12);
-      border-radius: 60px;
-      padding: 6px 18px;
-      font-size: 0.75rem;
-      font-weight: 700;
+      border-radius: 50px;
+      padding: 4px 14px;
+      font-size: 0.7rem;
+      font-weight: 600;
       color: #0ff;
-      border: 1px solid rgba(0,255,255,0.5);
-      margin-bottom: 20px;
+      border: 1px solid rgba(0,255,255,0.4);
+      margin-bottom: 16px;
     }
 
-    /* БЛОК С БОНУСАМИ (НЕЗАМЕТНЫЕ ФОРМУЛИРОВКИ) */
+    /* БЛОК БОНУСОВ */
     .bonus-info {
       background: rgba(10, 20, 35, 0.6);
-      border-radius: 40px;
-      padding: 20px 24px;
-      margin: 20px 0;
+      border-radius: 32px;
+      padding: 16px 20px;
+      margin: 16px 0;
       text-align: left;
-      border-left: 4px solid #0ff;
+      border-left: 3px solid #0ff;
     }
     .bonus-info p {
-      color: #e0e0e0;
-      font-size: 0.9rem;
-      line-height: 1.5;
-      margin: 8px 0;
+      color: #ddd;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      margin: 6px 0;
     }
     .bonus-info strong {
       color: #ffd966;
@@ -246,51 +252,55 @@
     /* ПРОМОКОД БЛОК */
     .promo-block {
       background: rgba(0,0,0,0.55);
-      border-radius: 100px;
-      padding: 10px 18px;
-      margin: 20px 0 15px;
+      border-radius: 80px;
+      padding: 8px 16px;
+      margin: 16px 0 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
       border: 1px solid rgba(0,255,255,0.5);
     }
     .promo-code {
-      font-family: 'Inter', monospace;
-      font-size: 1.9rem;
+      font-size: 1.5rem;
       font-weight: 800;
-      letter-spacing: 4px;
+      letter-spacing: 3px;
       background: #050510;
-      padding: 8px 22px;
-      border-radius: 60px;
+      padding: 6px 16px;
+      border-radius: 50px;
       color: #ffd966;
       flex: 1;
       text-align: center;
     }
+    @media (max-width: 500px) {
+      .promo-code {
+        font-size: 1.2rem;
+        letter-spacing: 2px;
+      }
+    }
     .copy-btn {
       background: #0ff;
       border: none;
-      padding: 10px 28px;
-      border-radius: 60px;
-      font-weight: 800;
-      font-size: 0.9rem;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.8rem;
       cursor: pointer;
       color: #000;
       transition: 0.2s;
-      box-shadow: 0 4px 12px rgba(0,255,255,0.3);
     }
     .copy-btn:active { transform: scale(0.96); background: #0cc; }
 
     .promo-note {
       background: rgba(0,255,255,0.1);
-      border-radius: 60px;
-      padding: 8px 20px;
+      border-radius: 50px;
+      padding: 6px 14px;
       display: inline-block;
-      font-size: 0.8rem;
-      font-weight: 700;
+      font-size: 0.75rem;
+      font-weight: 600;
       color: #0ff;
-      margin: 10px 0 15px;
+      margin: 8px 0 12px;
     }
 
     /* ГЛАВНАЯ КНОПКА */
@@ -298,41 +308,35 @@
       background: linear-gradient(105deg, #1e88e5, #0b5cad);
       border: none;
       width: 100%;
-      padding: 20px;
-      font-size: 1.5rem;
+      padding: 16px;
+      font-size: 1.3rem;
       font-weight: 800;
-      border-radius: 100px;
+      border-radius: 80px;
       color: white;
       cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 12px 28px rgba(30,136,229,0.5);
+      transition: 0.2s;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      margin-top: 15px;
+      gap: 10px;
+      margin-top: 12px;
     }
-    .main-btn:hover {
-      transform: scale(0.98);
-      background: linear-gradient(105deg, #0f7acf, #094a8a);
-      box-shadow: 0 6px 20px rgba(30,136,229,0.6);
-    }
-    .main-btn:active { transform: scale(0.97); }
+    .main-btn:active { transform: scale(0.98); }
 
     .footer {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: #aaa;
-      margin-top: 28px;
+      margin-top: 20px;
       border-top: 1px dashed rgba(0,255,255,0.3);
-      padding-top: 18px;
+      padding-top: 14px;
     }
 
     @keyframes fadeSlide {
-      from { opacity: 0; transform: translateY(30px); }
+      from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
     .glass-card {
-      animation: fadeSlide 0.55s ease-out;
+      animation: fadeSlide 0.4s ease-out;
     }
   </style>
 </head>
@@ -341,7 +345,6 @@
 <div class="coins-container" id="coinsContainer"></div>
 
 <div class="glass-card">
-  <!-- Переключатель языков с флагом и названием -->
   <div class="language-dropdown">
     <div class="lang-button" id="langButton">
       <span class="lang-flag-current" id="currentFlag">🇷🇺</span>
@@ -365,7 +368,6 @@
     </div>
   </div>
 
-  <!-- Подарок вместо фото -->
   <div class="gift-icon">
     <div class="animated-gift">🎁</div>
     <div class="gift-text">✦ Активируй свой подарок ✦</div>
@@ -395,10 +397,10 @@
 </div>
 
 <script>
-  // ========== РЕФЕРАЛЬНАЯ ССЫЛКА (ВАША) ==========
+  // Реферальная ссылка (ваша)
   const CASINO_URL = 'https://lkvn.cc/2f44f7';
 
-  // ========== ПЕРЕВОДЫ НА 14 ЯЗЫКОВ (ВСЁ, ЧТО НУЖНО) ==========
+  // Переводы (14 языков) — все тексты адаптированы, незаметные формулировки
   const translations = {
     ru: {
       yearChip: '⚡ 2026 · Ограниченная серия ⚡',
@@ -407,7 +409,7 @@
         <p>• Увеличенный бонус на старте</p>
         <p>• Подарочные вращения</p>
         <p>• Бонус начисляется частями за первые пополнения</p>
-        <p style="margin-top: 8px;"><span>💎</span> Активируй и получи увеличенный старт</p>
+        <p style="margin-top: 6px;"><span>💎</span> Активируй и получи увеличенный старт</p>
       `,
       promoNote: '🎁 Промокод активирует бонус при регистрации',
       footerNote: '🔞 Для пользователей старше 18 лет | Бонус активируется автоматически',
@@ -422,7 +424,7 @@
         <p>• Enhanced starting bonus</p>
         <p>• Gift spins</p>
         <p>• Bonus awarded in parts for the first top-ups</p>
-        <p style="margin-top: 8px;"><span>💎</span> Activate and get an enhanced start</p>
+        <p style="margin-top: 6px;"><span>💎</span> Activate and get an enhanced start</p>
       `,
       promoNote: '🎁 The promo code activates the bonus upon registration',
       footerNote: '🔞 For users over 18 | Bonus is activated automatically',
@@ -437,7 +439,7 @@
         <p>• مكافأة معززة للبداية</p>
         <p>• دورات هدية</p>
         <p>• المكافأة تُمنح على أجزاء لأول إيداعات</p>
-        <p style="margin-top: 8px;"><span>💎</span> فعّل واحصل على بداية معززة</p>
+        <p style="margin-top: 6px;"><span>💎</span> فعّل واحصل على بداية معززة</p>
       `,
       promoNote: '🎁 رمز الترويج يفعل المكافأة عند التسجيل',
       footerNote: '🔞 للمستخدمين فوق 18 سنة | يتم تفعيل المكافأة تلقائياً',
@@ -452,7 +454,7 @@
         <p>• Gelişmiş başlangıç bonusu</p>
         <p>• Hediye dönüşleri</p>
         <p>• Bonus ilk yüklemelerde parçalar halinde verilir</p>
-        <p style="margin-top: 8px;"><span>💎</span> Aktifleştir ve güçlü bir başlangıç yap</p>
+        <p style="margin-top: 6px;"><span>💎</span> Aktifleştir ve güçlü bir başlangıç yap</p>
       `,
       promoNote: '🎁 Promosyon kodu kayıtta bonusu aktifleştirir',
       footerNote: '🔞 18 yaş üstü kullanıcılar içindir | Bonus otomatik aktifleşir',
@@ -467,7 +469,7 @@
         <p>• بہتر آغاز بونس</p>
         <p>• تحفہ اسپنز</p>
         <p>• بونس پہلی ٹاپ اپس پر قسطوں میں دیا جاتا ہے</p>
-        <p style="margin-top: 8px;"><span>💎</span> ایکٹیویٹ کریں اور بہتر شروعات حاصل کریں</p>
+        <p style="margin-top: 6px;"><span>💎</span> ایکٹیویٹ کریں اور بہتر شروعات حاصل کریں</p>
       `,
       promoNote: '🎁 پرومو کوڈ رجسٹریشن پر بونس ایکٹیویٹ کرتا ہے',
       footerNote: '🔞 صرف 18 سال سے زائد صارفین کے لیے | بونس خودکار طور پر ایکٹیو ہوتا ہے',
@@ -482,7 +484,7 @@
         <p>• پاداش تقویتی شروع</p>
         <p>• چرخش‌های هدیه</p>
         <p>• پاداش به صورت اقساطی برای اولین واریزها داده می‌شود</p>
-        <p style="margin-top: 8px;"><span>💎</span> فعال کن و شروع قوی‌تری داشته باش</p>
+        <p style="margin-top: 6px;"><span>💎</span> فعال کن و شروع قوی‌تری داشته باش</p>
       `,
       promoNote: '🎁 کد تبلیغاتی پاداش را هنگام ثبت‌نام فعال می‌کند',
       footerNote: '🔞 فقط برای کاربران بالای 18 سال | پاداش به صورت خودکار فعال می‌شود',
@@ -497,7 +499,7 @@
         <p>• Bônus inicial aprimorado</p>
         <p>• Rodadas de presente</p>
         <p>• Bônus concedido em partes para os primeiros depósitos</p>
-        <p style="margin-top: 8px;"><span>💎</span> Ative e tenha um começo turbinado</p>
+        <p style="margin-top: 6px;"><span>💎</span> Ative e tenha um começo turbinado</p>
       `,
       promoNote: '🎁 O código promocional ativa o bônus no registro',
       footerNote: '🔞 Para maiores de 18 anos | Bônus ativado automaticamente',
@@ -512,7 +514,7 @@
         <p>• Bonus awal yang ditingkatkan</p>
         <p>• Putaran hadiah</p>
         <p>• Bonus diberikan bertahap untuk isi ulang pertama</p>
-        <p style="margin-top: 8px;"><span>💎</span> Aktifkan dan dapatkan awal yang lebih baik</p>
+        <p style="margin-top: 6px;"><span>💎</span> Aktifkan dan dapatkan awal yang lebih baik</p>
       `,
       promoNote: '🎁 Kode promo mengaktifkan bonus saat pendaftaran',
       footerNote: '🔞 Untuk pengguna di atas 18 tahun | Bonus diaktifkan secara otomatis',
@@ -527,7 +529,7 @@
         <p>• Bonus permulaan yang dipertingkatkan</p>
         <p>• Putaran hadiah</p>
         <p>• Bonus diberikan secara berperingkat untuk tambah nilai pertama</p>
-        <p style="margin-top: 8px;"><span>💎</span> Aktifkan dan dapatkan permulaan yang lebih baik</p>
+        <p style="margin-top: 6px;"><span>💎</span> Aktifkan dan dapatkan permulaan yang lebih baik</p>
       `,
       promoNote: '🎁 Kod promo mengaktifkan bonus semasa pendaftaran',
       footerNote: '🔞 Untuk pengguna berusia 18 tahun ke atas | Bonus diaktifkan secara automatik',
@@ -542,7 +544,7 @@
         <p>• โบนัสเริ่มต้นที่เพิ่มขึ้น</p>
         <p>• ฟรีสปินของขวัญ</p>
         <p>• โบนัสจะได้รับเป็นส่วนๆ สำหรับการเติมเงินครั้งแรก</p>
-        <p style="margin-top: 8px;"><span>💎</span> เปิดใช้งานและรับสิทธิ์เริ่มต้นที่ดีกว่า</p>
+        <p style="margin-top: 6px;"><span>💎</span> เปิดใช้งานและรับสิทธิ์เริ่มต้นที่ดีกว่า</p>
       `,
       promoNote: '🎁 รหัสโปรโมชั่นเปิดใช้งานโบนัสเมื่อลงทะเบียน',
       footerNote: '🔞 สำหรับผู้ใช้งานอายุ 18 ปีขึ้นไป | โบนัสถูกเปิดใช้งานอัตโนมัติ',
@@ -557,7 +559,7 @@
         <p>• Pinahusay na panimulang bonus</p>
         <p>• Mga paikot na regalo</p>
         <p>• Bonus ay ibinibigay nang paunti-unti para sa unang mga top-up</p>
-        <p style="margin-top: 8px;"><span>💎</span> I-activate at makakuha ng mas magandang simula</p>
+        <p style="margin-top: 6px;"><span>💎</span> I-activate at makakuha ng mas magandang simula</p>
       `,
       promoNote: '🎁 Ina-activate ng promo code ang bonus sa pagpaparehistro',
       footerNote: '🔞 Para sa mga user na 18 pataas | Awtomatikong na-a-activate ang bonus',
@@ -572,7 +574,7 @@
         <p>• बेहतर शुरुआती बोनस</p>
         <p>• उपहार स्पिन</p>
         <p>• बोनस पहले टॉप-अप पर किश्तों में दिया जाता है</p>
-        <p style="margin-top: 8px;"><span>💎</span> सक्रिय करें और बेहतर शुरुआत पाएं</p>
+        <p style="margin-top: 6px;"><span>💎</span> सक्रिय करें और बेहतर शुरुआत पाएं</p>
       `,
       promoNote: '🎁 प्रोमो कोड पंजीकरण पर बोनस सक्रिय करता है',
       footerNote: '🔞 18 वर्ष से अधिक उपयोगकर्ताओं के लिए | बोनस स्वचालित रूप से सक्रिय होता है',
@@ -587,7 +589,7 @@
         <p>• উন্নত প্রারম্ভিক বোনাস</p>
         <p>• উপহার স্পিন</p>
         <p>• বোনাস প্রথম টপ-আপগুলিতে কিস্তিতে দেওয়া হয়</p>
-        <p style="margin-top: 8px;"><span>💎</span> সক্রিয় করুন এবং একটি উন্নত শুরু পান</p>
+        <p style="margin-top: 6px;"><span>💎</span> সক্রিয় করুন এবং একটি উন্নত শুরু পান</p>
       `,
       promoNote: '🎁 প্রোমো কোড নিবন্ধনের সময় বোনাস সক্রিয় করে',
       footerNote: '🔞 18 বছরের বেশি ব্যবহারকারীদের জন্য | বোনাস স্বয়ংক্রিয়ভাবে সক্রিয় হয়',
@@ -602,7 +604,7 @@
         <p>• Bono inicial mejorado</p>
         <p>• Giros de regalo</p>
         <p>• Bono otorgado en partes para las primeras recargas</p>
-        <p style="margin-top: 8px;"><span>💎</span> Activa y obtén un comienzo mejorado</p>
+        <p style="margin-top: 6px;"><span>💎</span> Activa y obtén un comienzo mejorado</p>
       `,
       promoNote: '🎁 El código promocional activa el bono al registrarse',
       footerNote: '🔞 Para usuarios mayores de 18 años | El bono se activa automáticamente',
@@ -612,7 +614,6 @@
     }
   };
 
-  // Применить язык
   let currentLang = 'ru';
   function applyLanguage(lang) {
     currentLang = lang;
@@ -625,79 +626,56 @@
     document.getElementById('copyBtn').innerHTML = t.copyBtn;
     document.getElementById('claimBtn').innerHTML = t.claimBtn;
     window.currentCopyAlert = t.copyAlert;
-    
-    const flagMap = {
-      ru: '🇷🇺', en: '🇬🇧', ar: '🇸🇦', tr: '🇹🇷', ur: '🇵🇰', fa: '🇮🇷',
-      pt: '🇧🇷', id: '🇮🇩', ms: '🇲🇾', th: '🇹🇭', fil: '🇵🇭', hi: '🇮🇳', bn: '🇧🇩', es: '🇨🇱'
-    };
-    const nameMap = {
-      ru: 'Русский', en: 'English', ar: 'العربية', tr: 'Türkçe', ur: 'اردو', fa: 'فارسی',
-      pt: 'Português', id: 'Indonesia', ms: 'Melayu', th: 'ไทย', fil: 'Filipino', hi: 'हिन्दी', bn: 'বাংলা', es: 'Español'
-    };
+
+    const flagMap = { ru: '🇷🇺', en: '🇬🇧', ar: '🇸🇦', tr: '🇹🇷', ur: '🇵🇰', fa: '🇮🇷', pt: '🇧🇷', id: '🇮🇩', ms: '🇲🇾', th: '🇹🇭', fil: '🇵🇭', hi: '🇮🇳', bn: '🇧🇩', es: '🇨🇱' };
+    const nameMap = { ru: 'Русский', en: 'English', ar: 'العربية', tr: 'Türkçe', ur: 'اردو', fa: 'فارسی', pt: 'Português', id: 'Indonesia', ms: 'Melayu', th: 'ไทย', fil: 'Filipino', hi: 'हिन्दी', bn: 'বাংলা', es: 'Español' };
     if (flagMap[lang]) document.getElementById('currentFlag').innerText = flagMap[lang];
     if (nameMap[lang]) document.getElementById('currentLangName').innerText = nameMap[lang];
   }
 
-  // Копирование
   function copyPromo() {
     const promoText = document.getElementById('promoCode').innerText;
-    navigator.clipboard.writeText(promoText).then(() => {
-      alert(window.currentCopyAlert);
-    }).catch(() => {
-      alert('Скопируйте промокод вручную: ' + promoText);
-    });
+    navigator.clipboard.writeText(promoText).then(() => alert(window.currentCopyAlert)).catch(() => alert('Скопируйте вручную: ' + promoText));
   }
   document.getElementById('copyBtn').onclick = copyPromo;
-
-  // Кнопка перехода по реферальной ссылке
-  document.getElementById('claimBtn').onclick = () => {
-    window.open(CASINO_URL, '_blank');
-  };
+  document.getElementById('claimBtn').onclick = () => window.open(CASINO_URL, '_blank');
 
   // Выпадающее меню
   const langButton = document.getElementById('langButton');
   const langMenu = document.getElementById('langMenu');
-  langButton.onclick = (e) => {
-    e.stopPropagation();
-    langMenu.classList.toggle('show');
-  };
+  langButton.onclick = (e) => { e.stopPropagation(); langMenu.classList.toggle('show'); };
   document.querySelectorAll('.lang-item').forEach(item => {
     item.onclick = (e) => {
       e.stopPropagation();
-      const lang = item.getAttribute('data-lang');
-      applyLanguage(lang);
+      applyLanguage(item.getAttribute('data-lang'));
       langMenu.classList.remove('show');
     };
   });
-  document.addEventListener('click', () => {
-    langMenu.classList.remove('show');
-  });
+  document.addEventListener('click', () => langMenu.classList.remove('show'));
 
-  // Генерация монет (золотые + серебряные)
-  function createCoin() {
-    const coin = document.createElement('div');
-    coin.classList.add('coin');
-    if (Math.random() > 0.6) coin.classList.add('silver');
-    const size = Math.random() * 35 + 28;
-    coin.style.width = size + 'px';
-    coin.style.height = size + 'px';
-    coin.style.left = Math.random() * 100 + '%';
-    const duration = Math.random() * 7 + 4.5;
-    coin.style.animationDuration = duration + 's';
-    coin.style.animationDelay = Math.random() * 6 + 's';
-    document.getElementById('coinsContainer').appendChild(coin);
-    setTimeout(() => coin.remove(), duration * 1000);
+  // Оптимизированная генерация монет (не более 20 одновременно)
+  let coinInterval;
+  function startCoins() {
+    if (coinInterval) clearInterval(coinInterval);
+    coinInterval = setInterval(() => {
+      const container = document.getElementById('coinsContainer');
+      if (container.children.length < 22) {
+        const coin = document.createElement('div');
+        coin.classList.add('coin');
+        if (Math.random() > 0.6) coin.classList.add('silver');
+        const size = Math.random() * 28 + 20;
+        coin.style.width = size + 'px';
+        coin.style.height = size + 'px';
+        coin.style.left = Math.random() * 100 + '%';
+        const duration = Math.random() * 5 + 3.5;
+        coin.style.animationDuration = duration + 's';
+        coin.style.animationDelay = Math.random() * 3 + 's';
+        container.appendChild(coin);
+        setTimeout(() => coin.remove(), duration * 1000);
+      }
+    }, 300);
   }
-
-  setInterval(() => {
-    if (document.getElementById('coinsContainer').children.length < 60) {
-      createCoin();
-    }
-  }, 220);
-  for (let i = 0; i < 35; i++) {
-    setTimeout(createCoin, i * 70);
-  }
-
+  startCoins();
   applyLanguage('ru');
 </script>
 </body>
