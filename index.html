@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
   <meta name="referrer" content="no-referrer">
-  <title>LEVBONUS7 | Активация бонуса</title>
+  <title>LEVBONUS7 | Activate Bonus</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * {
@@ -322,12 +322,12 @@
 <div class="glass-card">
   <div class="language-dropdown">
     <div class="lang-button" id="langButton">
-      <span class="lang-flag-current" id="currentFlag">🇷🇺</span>
-      <span class="lang-name-current" id="currentLangName">Русский</span>
+      <span class="lang-flag-current" id="currentFlag">🇬🇧</span>
+      <span class="lang-name-current" id="currentLangName">English</span>
     </div>
     <div class="lang-menu" id="langMenu">
-      <div class="lang-item" data-lang="ru" data-flag="🇷🇺" data-name="Русский"><span class="lang-flag">🇷🇺</span><span>Русский</span></div>
       <div class="lang-item" data-lang="en" data-flag="🇬🇧" data-name="English"><span class="lang-flag">🇬🇧</span><span>English</span></div>
+      <div class="lang-item" data-lang="ru" data-flag="🇷🇺" data-name="Русский"><span class="lang-flag">🇷🇺</span><span>Русский</span></div>
       <div class="lang-item" data-lang="ar" data-flag="🇸🇦" data-name="العربية"><span class="lang-flag">🇸🇦</span><span>العربية</span></div>
       <div class="lang-item" data-lang="tr" data-flag="🇹🇷" data-name="Türkçe"><span class="lang-flag">🇹🇷</span><span>Türkçe</span></div>
       <div class="lang-item" data-lang="ur" data-flag="🇵🇰" data-name="اردو"><span class="lang-flag">🇵🇰</span><span>اردو</span></div>
@@ -345,28 +345,28 @@
 
   <div class="gift-icon">
     <div class="animated-gift">🎁</div>
-    <div class="gift-text">✦ Активируй свой подарок ✦</div>
+    <div class="gift-text">✦ Activate your gift ✦</div>
   </div>
 
   <div class="content">
     <div class="main-title">LEVBONUS7</div>
-    <div class="year-chip" id="yearChip">⚡ 2026 · Ограниченная серия ⚡</div>
+    <div class="year-chip" id="yearChip">⚡ 2026 · Limited Edition ⚡</div>
 
     <div class="bonus-info" id="bonusInfo"></div>
 
     <div class="promo-block">
       <span class="promo-code" id="promoCode">LEVBONUS7</span>
-      <button class="copy-btn" id="copyBtn">📋 Копировать</button>
+      <button class="copy-btn" id="copyBtn">📋 Copy</button>
     </div>
 
     <div class="promo-note" id="promoNote"></div>
 
     <button class="main-btn" id="claimBtn">
-      🚀 Забрать подарок
+      🚀 Claim Gift
     </button>
 
     <div class="footer" id="footerNote">
-      🔞 18+ | Бонус активируется автоматически
+      🔞 18+ | Bonus activates automatically
     </div>
   </div>
 </div>
@@ -375,17 +375,8 @@
   // РЕФЕРАЛЬНАЯ ССЫЛКА
   const CASINO_URL = 'https://lkvn.cc/2f44f7';
 
-  // ПЕРЕВОДЫ (14 языков)
+  // ПЕРЕВОДЫ (14 языков) — по умолчанию английский
   const translations = {
-    ru: {
-      yearChip: '⚡ 2026 · Ограниченная серия ⚡',
-      bonusInfo: `<p><span>✨</span> <strong>Что даёт промокод:</strong></p><p>• Увеличенный бонус на старте</p><p>• Подарочные вращения</p><p>• Бонус начисляется частями за первые пополнения</p><p style="margin-top:5px;"><span>💎</span> Активируй и получи увеличенный старт</p>`,
-      promoNote: '🎁 Промокод активирует бонус при регистрации',
-      footerNote: '🔞 18+ | Бонус активируется автоматически',
-      copyAlert: '✅ Промокод LEVBONUS7 скопирован! Нажмите "Забрать подарок"',
-      copyBtn: '📋 Копировать',
-      claimBtn: '🚀 Забрать подарок'
-    },
     en: {
       yearChip: '⚡ 2026 · Limited Edition ⚡',
       bonusInfo: `<p><span>✨</span> <strong>What the promo code gives:</strong></p><p>• Enhanced starting bonus</p><p>• Gift spins</p><p>• Bonus awarded in parts for first top-ups</p><p style="margin-top:5px;"><span>💎</span> Activate and get an enhanced start</p>`,
@@ -394,6 +385,15 @@
       copyAlert: '✅ Promo code LEVBONUS7 copied! Click "Claim Gift"',
       copyBtn: '📋 Copy',
       claimBtn: '🚀 Claim Gift'
+    },
+    ru: {
+      yearChip: '⚡ 2026 · Ограниченная серия ⚡',
+      bonusInfo: `<p><span>✨</span> <strong>Что даёт промокод:</strong></p><p>• Увеличенный бонус на старте</p><p>• Подарочные вращения</p><p>• Бонус начисляется частями за первые пополнения</p><p style="margin-top:5px;"><span>💎</span> Активируй и получи увеличенный старт</p>`,
+      promoNote: '🎁 Промокод активирует бонус при регистрации',
+      footerNote: '🔞 18+ | Бонус активируется автоматически',
+      copyAlert: '✅ Промокод LEVBONUS7 скопирован! Нажмите "Забрать подарок"',
+      copyBtn: '📋 Копировать',
+      claimBtn: '🚀 Забрать подарок'
     },
     ar: {
       yearChip: '⚡ 2026 · نسخة محدودة ⚡',
@@ -505,7 +505,7 @@
     }
   };
 
-  let currentLang = 'ru';
+  let currentLang = 'en'; // по умолчанию английский
   function applyLanguage(lang) {
     currentLang = lang;
     const t = translations[lang];
@@ -518,15 +518,15 @@
     document.getElementById('claimBtn').innerHTML = t.claimBtn;
     window.currentCopyAlert = t.copyAlert;
 
-    const flagMap = { ru:'🇷🇺', en:'🇬🇧', ar:'🇸🇦', tr:'🇹🇷', ur:'🇵🇰', fa:'🇮🇷', pt:'🇧🇷', id:'🇮🇩', ms:'🇲🇾', th:'🇹🇭', fil:'🇵🇭', hi:'🇮🇳', bn:'🇧🇩', es:'🇨🇱' };
-    const nameMap = { ru:'Русский', en:'English', ar:'العربية', tr:'Türkçe', ur:'اردو', fa:'فارسی', pt:'Português', id:'Indonesia', ms:'Melayu', th:'ไทย', fil:'Filipino', hi:'हिन्दी', bn:'বাংলা', es:'Español' };
+    const flagMap = { en:'🇬🇧', ru:'🇷🇺', ar:'🇸🇦', tr:'🇹🇷', ur:'🇵🇰', fa:'🇮🇷', pt:'🇧🇷', id:'🇮🇩', ms:'🇲🇾', th:'🇹🇭', fil:'🇵🇭', hi:'🇮🇳', bn:'🇧🇩', es:'🇨🇱' };
+    const nameMap = { en:'English', ru:'Русский', ar:'العربية', tr:'Türkçe', ur:'اردو', fa:'فارسی', pt:'Português', id:'Indonesia', ms:'Melayu', th:'ไทย', fil:'Filipino', hi:'हिन्दी', bn:'বাংলা', es:'Español' };
     if (flagMap[lang]) document.getElementById('currentFlag').innerText = flagMap[lang];
     if (nameMap[lang]) document.getElementById('currentLangName').innerText = nameMap[lang];
   }
 
   function copyPromo() {
     const promoText = document.getElementById('promoCode').innerText;
-    navigator.clipboard.writeText(promoText).then(() => alert(window.currentCopyAlert)).catch(() => alert('Скопируйте вручную: ' + promoText));
+    navigator.clipboard.writeText(promoText).then(() => alert(window.currentCopyAlert)).catch(() => alert('Copy manually: ' + promoText));
   }
   document.getElementById('copyBtn').onclick = copyPromo;
   document.getElementById('claimBtn').onclick = () => window.open(CASINO_URL, '_blank');
@@ -567,7 +567,7 @@
     }, 350);
   }
   startCoins();
-  applyLanguage('ru');
+  applyLanguage('en'); // устанавливаем английский по умолчанию
 </script>
 </body>
 </html>
